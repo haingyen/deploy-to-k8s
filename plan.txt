@@ -1,0 +1,19 @@
+0. Security
+- Service Account (Jenkins)
+
+1. Infrastructure (AWS + Terraform)
+- Terraform
+    + Networking
+    + EC2 
+- K8s Cluster (EC2 + kubeadm)
+    + ControlPlan (1)
+    + WorkerNode (2)
+    + Internet --> Ingress Controller (Nginx) --> Service-Fontend (ClusterIP) --> Pod (Reactjs)
+    +              Pod (Reactjs) --> Service-Backend (ClusterIP) --> Pod (Nodejs)
+- Jenkins Server (EC2)
+
+2. Application (Reactjs + Nodejs)
+
+3. Deploy (Jenkins CI/CD)
+- CI: Local --> Build --> Build Image (Dockerfile) --> Push (Dockerhub)
+- CD: Pull(Dockerhub) --> Deploy (Manifest)
