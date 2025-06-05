@@ -3,10 +3,8 @@ resource "aws_instance" "control_plane" {
   instance_type = "t2.micro" #?????????????????????????????????????????
   subnet_id = aws_subnet.public_subnet_1.id
   key_name = "main-key"
-  user_data = join("/n", [
-    file("./scripts/install-docker.sh"),
-    file("./scripts/install-k8s.sh"),
-  ])
+  user_data = file("./scripts/install-k8s.sh")
+  
   vpc_security_group_ids = [ aws_security_group.sg_k8s.id ]
 
   tags = {
@@ -19,10 +17,7 @@ resource "aws_instance" "jenkins" {
   instance_type = "t2.micro" #?????????????????????????????????????????
   subnet_id = aws_subnet.public_subnet_2.id
   key_name = "main-key"
-  user_data = join("/n", [
-    file("./scripts/install-docker.sh"),
-    file("./scripts/install-jenkins.sh"),
-  ])
+  user_data = file("./scripts/install-jenkins.sh")
   vpc_security_group_ids = [ aws_security_group.sg_k8s.id ]
 
   tags = {
@@ -35,10 +30,7 @@ resource "aws_instance" "worker_1" {
   instance_type = "t2.micro" #?????????????????????????????????????????
   subnet_id = aws_subnet.public_subnet_1.id
   key_name = "main-key"
-  user_data = join("/n", [
-    file("./scripts/install-docker.sh"),
-    file("./scripts/install-k8s.sh"),
-  ])
+  user_data = file("./scripts/install-k8s.sh")
   vpc_security_group_ids = [ aws_security_group.sg_k8s.id ]
 
   tags = {
@@ -50,10 +42,7 @@ resource "aws_instance" "worker_2" {
   instance_type = "t2.micro" #?????????????????????????????????????????
   subnet_id = aws_subnet.public_subnet_2.id
   key_name = "main-key"
-  user_data = join("/n", [
-    file("./scripts/install-docker.sh"),
-    file("./scripts/install-k8s.sh"),
-  ])
+  user_data = file("./scripts/install-k8s.sh")
   vpc_security_group_ids = [ aws_security_group.sg_k8s.id ]
 
   tags = {
