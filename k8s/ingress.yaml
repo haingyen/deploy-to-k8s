@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"  # Sử dụng ClusterIssuer đã tạo
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - example.yourdomain.com
+    secretName: example-tls  # Cert-Manager sẽ tạo secret này
+  rules:
+  - host: "example.mydomain.com"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: k8s-service
+            port:
+              number: 80
+
+# Áp dụng Ingress
+# kubectl apply -f ingress.yaml
+
+# Kiểm tra ingress
+# kubectl get ingress
+
+# Xem logs controller
+# kubectl logs -n ingress-nginx -l app.kubernetes.io/name=ingress-nginx
