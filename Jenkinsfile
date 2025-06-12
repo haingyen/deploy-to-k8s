@@ -33,7 +33,7 @@ pipeline {
             }
         }
 
-         stage('Push Docker Image to Dockerhub') {
+        stage('Push Docker Image to Dockerhub') {
             steps {
                 sh "docker push ${DOCKER_IMAGE}"
             }
@@ -46,10 +46,17 @@ pipeline {
                     sh("sed -i 's|IMAGE_TAG|${DOCKER_IMAGE}|g' k8s/deployment.yaml")
 
                     // Áp dụng cấu hình Kubernetes
-                    sh("kubectl apply -f k8s/ -n ${K8S_NAMESPACE}")
+                    sh("kubectl apply -f k8s/deployment.yaml -n ${K8S_NAMESPACE}")
                     
                     // Kiểm tra trạng thái rollout
                     sh("kubectl rollout status deployment/${APP_NAME} -n ${K8S_NAMESPACE}")
+
+                    // Áp dụng cấu hình Ingress
+                    sh("kubectl apply -f k8s/letsencrypt-issuer.yaml")
+                    sh("kubectl apply -f k8s/ingress.yaml -n ${K8S_NAMESPACE}")
+            
+                    // Kiểm tra trạng thái
+                    sh("kubectl get ingress -n ${K8S_NAMESPACE}")
                 }
             }
          }
